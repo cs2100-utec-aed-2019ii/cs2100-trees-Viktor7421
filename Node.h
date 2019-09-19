@@ -11,10 +11,11 @@ public:
     T key;
     Node<T> *left, *right;
 
-    Node(T key){
+    Node(T key = NULL){
         this->key = key;
         this->left = this->right = nullptr;
     }
+    ~Node(){}
 
 };
 
