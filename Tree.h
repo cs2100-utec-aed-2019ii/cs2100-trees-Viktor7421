@@ -41,6 +41,127 @@ public:
             }
         }
     }
+
+    Node<T>* max_min(Node<T>* temp, Node<T>* node_delete, Node<T>* temp_prev){
+        bool direction = 1;
+        temp_prev = temp;
+        temp = temp->left;
+        while(temp->right){
+            direction = 0;
+            temp_prev = temp;
+            temp = temp->right;
+        }
+        node_delete->key = temp->key;
+        if(temp->left){
+            temp = max_min(temp, temp, temp_prev);
+        } else if(temp->right){
+            temp = min_max(temp, temp, temp_prev);
+        } else {
+            if(direction == 1){
+                temp_prev->left = nullptr;
+            } else {
+                temp_prev->right = nullptr;
+            }
+        }
+        return temp;
+    }
+
+    Node<T>* min_max(Node<T>* temp, Node<T>* node_delete, Node<T>* temp_prev){
+        bool direction = 0;
+        temp_prev = temp;
+        temp = temp->right;
+        while(temp->left){
+            temp_prev = temp;
+            temp = temp->left;
+            direction = 1;
+        }
+        node_delete->key = temp->key;
+        if(temp->left){
+            temp = max_min(temp, temp, temp_prev);
+        } else if(temp->right){
+            temp = min_max(temp, temp, temp_prev);
+        } else {
+            if(direction == 1){
+                temp_prev->left = nullptr;
+            } else {
+                temp_prev->right = nullptr;
+            }
+        }
+        return temp;
+    }
+
+    void delete_node (const T& _value) {
+        if (root) {
+            Node<T>* temp = root;
+            Node<T>* temp_prev = root;
+            while(temp){
+                if (temp->key > _value)
+                    if(temp->left)
+                        temp = temp->left;
+                    else {
+                        break;
+                    }
+                else if (temp->key < _value)
+                    if(temp->right)
+                        temp = temp->right;
+                    else {
+                        break;
+                    }
+                else {
+                    if(temp->left)
+                        temp = max_min(temp, temp, temp_prev);
+                    else if(temp->right)
+                        temp = min_max(temp, temp, temp_prev);
+                    delete temp;
+                    break;
+                }
+            }
+        }
+    }
+
+    void branches(int& cont, Node<T>* temp, int& height, bool direction){
+        if(direction == 1){
+            cont++;
+            temp = temp->left;
+            if(cont > height){
+                height = cont;
+            }
+            if(temp->left){
+                branches(cont, temp, height, 1);
+            }
+            if(temp->right){
+                branches(cont, temp, height, 0);
+            }
+        }
+        if(direction == 0) {
+            (cont)++;
+            temp = temp->right;
+            if(cont > height){
+                height = cont;
+            }
+            if(temp->left){
+                branches(cont, temp, height, 1);
+            }
+            if(temp->right){
+                branches(cont, temp, height, 0);
+            }
+        }
+    }
+
+    int get_height(){
+        int height = 0;
+        if(!root)
+            return 0;
+        else {
+            Node<T>* temp = root;
+            int cont = 0;
+            if(temp->left)
+                branches(cont, temp, height, 1);
+            if(temp->right)
+                branches(cont, temp, height, 0);
+        }
+        return height;
+    }
 };
 
 #endif //UNTITLED23_TREE_H
