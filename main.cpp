@@ -14,6 +14,8 @@ int main() {
     std::cout << tree.root->left->right->key << ' ';
     std::cout << tree.root->key << '\n';
     std::cout << tree.get_height() << ' ';
-    //std::cout << tree.root->right->key << ' ';
+    tree.delete_all_tree();
+    tree.insert_node(1);
+    std::cout << tree.root->key << ' ';
     return 0;
 }

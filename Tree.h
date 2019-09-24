@@ -162,6 +162,35 @@ public:
         }
         return height;
     }
+
+    void delete_left(Node<T>* temp){
+        temp = temp->left;
+        if(temp->left)
+            delete_left(temp);
+        if(temp->right)
+            delete_right(temp);
+        delete temp;
+    }
+
+    void delete_right(Node<T>* temp){
+        temp = temp->right;
+        if(temp->left)
+            delete_left(temp);
+        if(temp->right)
+            delete_right(temp);
+        delete temp;
+    }
+
+    void delete_all_tree(){ //debe eliminar todo y volverlo inutilizable, o con la posibilidad de poder reusarlo
+        if (root) {
+            Node<T>* temp = root;
+            if(temp->left)
+                delete_left(temp);
+            if(temp->right)
+                delete_right(temp);
+            delete root;
+        }
+    }
 };
 
 #endif //UNTITLED23_TREE_H
